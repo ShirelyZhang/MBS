@@ -1,6 +1,7 @@
 <?php
 header('Content-type: text/html;charset=utf-8');
-require_once('db_config.php');
+require_once('dao/userDao.php');
+require_once('dao/messageDao.php');
 
 // permission validate
 session_start();
@@ -27,31 +28,23 @@ if (!isset($_POST['message-id'])
 $messageId = $_POST['message-id'];
 $messageTitle = trim($_POST['message-title']);
 $messageContent = trim($_POST['message-content']);
+$now = date('Y-m-d H:i:s');
 
-// connect database
-$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-try {
-	$conn = new PDO($dsn, DB_USER, DB_PWD);
-} catch (PDOException $error) {
-	die('Connect failed: ' . $error->getMessage());
-}
-
-$conn->exec('set names utf8');
-
-// validate the message's author is current user
-$sql = 'select * from user join message on user.user_id = message.user_id where user.nickname = ? and message.message_id = ?';
-$stmt = $conn->prepare($sql);
-$stmt->execute(array($_SESSION['nickname'], $messageId));
-$result = $stmt->fetch();
-
+$userDao = new UserDao();
+$result = $userDao->getByNicknameAndMessageId($_SESSION['nickname'], $messageId);
 if (!$result) {
 	echo 'This message is not pubished by current user.';
 	return ;
 }
 
-$sql = 'update message set title = ? , content = ? , updated = NOW() where message_id = ?';
-$stmt = $conn->prepare($sql);
-$result = $stmt->execute(array($messageTitle, $messageContent, $messageId));
+$message = new Message();
+$message->setMessageId($messageId);
+$message->setTitle($messageTitle);
+$message->setContent($messageContent);
+$message->setUpdated($now);
+
+$messageDao = new MessageDao();
+$result = $messageDao->update($message);
 
 if ($result) {
 	echo 'success';

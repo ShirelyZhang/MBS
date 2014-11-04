@@ -1,6 +1,7 @@
 <?php
 header('Content-type: text/html;charset=utf-8');
-require_once('db_config.php');
+require_once('model/User.php');
+require_once('dao/userDao.php');
 
 // validate params
 $nicknameFormat = '/^[\x{4e00}-\x{9fa5}\w]+$/u';
@@ -27,22 +28,11 @@ if (!isset($_POST['nickname'])) {
 }
 
 $nickname = $_POST['nickname'];
-$password = md5($_POST['pwd']);
-$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
+$password = $_POST['pwd'];
 
-try {
-	$conn = new PDO($dsn, DB_USER, DB_PWD);
-} catch (PDOException $error) {
-	die('Connect DB failed: ' . $error->getMessage());
-}
-// set encode utf-8
-$conn->exec('set names utf8');
+$userDao = new UserDao();
 
-$sql = 'select user_id from user where nickname = ?';
-$statement = $conn->prepare($sql);
-$statement->execute(array($nickname));
-
-$result = $statement->fetchAll();
+$result = $userDao->getByNickname($nickname);
 
 // nickname is exist
 if ($result) {
@@ -51,14 +41,16 @@ if ($result) {
 }
 
 $now = date('Y-m-d H:i:s');
+$user = new User();
+$user->setNickname($nickname);
 
-$sql = 'insert into user(nickname, password, created, updated) values(?, ?, ?, ?)';
-$statement = $conn->prepare($sql);
-$statement->execute(array($nickname, $password, $now, $now));
-$user_id = $conn->lastInsertId();
-// $result = $statement->fetch();
+$user->setPassword($password);
+$user->setCreated($now);
+$user->setUpdated($now);
 
-if ($user_id) {
+$userId = $userDao->insert($user);
+
+if ($userId) {
 	echo 'success';
 } else {
 	echo 'fail';

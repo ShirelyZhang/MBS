@@ -1,6 +1,8 @@
 <?php
 header('Content-type: text/html;charset=utf-8');
-require_once('db_config.php');
+require_once('dao/userDao.php');
+require_once('dao/messageDao.php');
+require_once('model/Message.php');
 
 // permission validate
 session_start();
@@ -26,26 +28,19 @@ $messageTitle = trim($_POST['message-title']);
 $messageContent = trim($_POST['message-content']);
 $now = date('Y-m-d H:i:s');
 
-// connect database
-$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-try {
-	$conn = new PDO($dsn, DB_USER, DB_PWD);
-} catch (PDOException $error) {
-	die('Connect failed: ' . $error->getMessage());
-}
-
-$conn->exec('set names utf8');
-
-// search user id according to nickname
-$sql = 'select user_id from user where nickname = ?';
-$stmt = $conn->prepare($sql);
-$stmt->execute(array($nickname));
-$result = $stmt->fetch();
+$userDao = new UserDao();
+$result = $userDao->getByNickname($nickname);
 $userId = $result['user_id'];
 
-$sql = 'insert into message(user_id, title, content, created, updated) values(?, ?, ?, ?, ?)';
-$stmt = $conn->prepare($sql);
-$result = $stmt->execute(array($userId, $messageTitle, $messageContent, $now, $now));
+$message = new Message();
+$message->setUserId($userId);
+$message->setTitle($messageTitle);
+$message->setContent($messageContent);
+$message->setCreated($now);
+$message->setUpdated($now);
+
+$messageDao = new messageDao();
+$result = $messageDao->insert($message);
 
 if ($result) {
 	echo 'success';

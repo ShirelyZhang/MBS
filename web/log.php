@@ -1,6 +1,6 @@
 <?php
 header('Content-type: text/html;charset=utf-8');
-require_once('db_config.php');
+require_once('dao/userDao.php');
 
 session_start();
 
@@ -15,24 +15,10 @@ if (!isset($_POST['nickname'])) {
 
 // validate nickname and password
 $nickname = $_POST['nickname'];
-$password = md5($_POST['pwd']);
+$password = $_POST['pwd'];
 
-$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-try{
-	$conn = new PDO($dsn, DB_USER, DB_PWD);
-} catch (PDOException $error) {
-	die('Connect failed: ' . $e->getMessage());
-}
-
-// set encode
-$conn->exec('set names utf8');
-
-// sql statement
-$sql = 'select user_id from user where nickname = ? and password = ?';
-$stmt = $conn->prepare($sql);
-$stmt->execute(array($nickname, $password));
-
-$result = $stmt->fetchAll();
+$userDao = new UserDao();
+$result = $userDao->getByNicknameAndPwd($nickname, $password);
 
 if ($result) {
 	// update session

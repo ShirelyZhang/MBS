@@ -1,7 +1,7 @@
 <?php 
 header('Content-type: text/html;charset=utf-8'); 
 require_once('permission_filter.php');
-require_once('db_config.php');
+require_once('dao/messageDao.php');
 
 $status = true;
 $errorMsg = '';
@@ -12,20 +12,8 @@ if (!isset($_GET['message_id'])) {
 } else {
   $messageId = $_GET['message_id'];
 
-  // connect database
-  $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-  try {
-    $conn = new PDO($dsn, DB_USER, DB_PWD);
-  } catch (PDOException $error) {
-    die('connect failed: ' . $error->getMessage());
-  }
-
-  $conn->exec('set names utf8');
-
-  $sql = 'select m.message_id, m.title, m.content, m.created, m.updated, user.nickname from message m join user on m.user_id = user.user_id where m.message_id = ?';
-  $stmt = $conn->prepare($sql);
-  $stmt->execute(array($messageId));
-  $result = $stmt->fetch();
+  $messageDao = new MessageDao();
+  $result = $messageDao->getById($messageId);
 
   if ($result) {
     $status = true;
