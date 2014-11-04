@@ -1,0 +1,44 @@
+.title {
+	text-align: center;
+	font-size: 24px;
+	margin: 40px 0 20px 0;
+	color: #797979;
+}
+
+.login-form {
+	border: 1px solid #ccc;
+	width: 350px;
+	margin: 0 auto;
+}
+
+.logTable {
+	margin: 0 auto;
+}
+
+.login-form th,
+.login-form td {
+	padding: 10px 0;
+}
+
+.login-form input {
+	width: 249px;
+	height: 30px;
+}
+
+#logBtn {
+	background-color: #66cc99;
+	border: 0;
+	color: #eff;
+	width: 255px;
+	height: 34px;
+	cursor: pointer;
+	margin-bottom: 20px;
+}
+
+#logBtn[disabled=disabled] {
+	background-color: #377;
+}
+
+.errors {
+	color: #a94442;
+}

@@ -1,0 +1,7 @@
+.nav-bar .nav-link {
+    color: #797979;
+}
+
+.nav-link[data-type="1"] {
+    color: #66cc99;
+}

@@ -1,0 +1,42 @@
+.title {
+	font-size: 24px;
+	margin: 40px 0;
+	padding-left: 160px;
+	color: #797979;
+}
+
+.register-form tr {
+	margin-bottom: 20px;
+}
+
+.register-form th {
+	text-align: right;
+	font-size: 16px;
+	color: #797979;
+}
+
+.register-form td {
+	text-align: left;
+}
+
+.register-form th,
+.register-form td {
+	padding: 10px;
+}
+
+.register-form input {
+	height: 26px;
+}
+
+#regBtn {
+	background-color: #66cc99;
+	border: 0;
+	color: #eff;
+	width: 195px;
+	height: 30px;
+	cursor: pointer;
+}
+
+#regBtn[disabled=disabled] {
+	background-color: #377;
+}

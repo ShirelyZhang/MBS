@@ -1,0 +1,30 @@
+/* header style*/
+.header {
+	width: 100%;
+	background-color: #66cc99;
+}
+
+.header-block {
+	background-color: #66cc99;
+	width: 940px;
+	margin: 0 auto;
+	height: 40px;
+	padding: 8px 0;
+}
+
+.logo-title{
+	font-size: 32px;
+	line-height: 32px;
+	float: left;
+}
+
+.logo-title a,
+.log-btns a {
+	color: #eff;
+	text-decoration: none;
+}
+
+.log-btns {
+	float: right;
+	color: #eff;
+}

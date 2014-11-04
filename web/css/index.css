@@ -1,0 +1,66 @@
+.nav-link[data-type="0"] {
+    color: #66cc99;
+}
+
+.content {
+	margin-top: 40px;
+	color: #797979;
+}
+
+.filter-section {
+	margin-bottom: 20px;
+}
+
+.filter-section input {
+	display: inline-block;
+	margin-right: 10px;
+	height: 25px;
+}
+
+#searchBtn,
+#createLink {
+	width: 60px;
+	height: 29px;
+	background-color: #66cc99;
+	color: #eff;
+	border: 0;
+	cursor: pointer;
+}
+
+#createLink {
+	float: right;
+	display: inline-block;
+	width: auto;
+	line-height: 29px;
+	padding: 0 5px;
+	text-decoration: none;
+}
+
+#messageListTable th,
+#messageListTable td {
+	padding: 10px 5px;
+}
+
+#messageListTable thead {
+	background-color: #eee;
+}
+
+#messageListTable {
+	width: 940px;
+}
+
+#messageListTbody tr a {
+	display: inline-block;
+	margin-right: 10px;
+	/* color: #006600; */
+}
+
+.col-id,
+.col-author,
+.col-created {
+	width: 180px;
+}
+
+.col-title {
+	width: 220px;
+}
