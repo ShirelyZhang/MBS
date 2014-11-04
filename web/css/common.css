@@ -51,6 +51,12 @@ body {
 	border-bottom: 4px solid #eee;
 }
 
+@media screen and (max-width: 960px) {
+	.header {
+		width: 960px;
+	}
+}
+
 .header-block {
 	width: 940px;
 	margin: 0 auto;
